@@ -1,0 +1,11 @@
+#bootstrap-overrides .bg-primary {
+  background-color: #5E8116 !important;
+}
+
+#bootstrap-overrides .bg-secondary {
+  background-color: #95a870 !important;
+}
+
+.bg-accent {
+  background-color: #72716b !important;
+}
