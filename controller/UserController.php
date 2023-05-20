@@ -25,7 +25,6 @@ class UserController
 
         ViewHelper::render("view/users/user-login-form.php", $vars);
     }
-    // Test for development branch
 
     // POST request
     public static function login()
