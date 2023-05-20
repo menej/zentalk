@@ -8,12 +8,6 @@
 
 <title>All Posts</title>
 
-<style>
-    .clickable-div {
-      cursor: pointer;
-    }
-</style>
-
 <body id="bootstrap-overrides">
 
 <?php include(INC_URL . "navbar.php"); ?>
@@ -22,12 +16,12 @@
 <div class="container-lg my-5">
     <div class="row mb-4">
         <div class="col-12 text-center">
-            <h1 class="display-3 border-bottom">Check out all the posts</h1>
+            <h1 class="display-3 border-bottom">Check out all of the posts</h1>
         </div>
     </div>
 
     <?php foreach ($posts as $post): ?>
-        <div data-url="post/<?= $post["pid"] ?>" class="row mb-4 clickable-div user-select-none">
+        <div data-url="post?pid=<?= $post["pid"] ?>" class="row mb-4 clickable-div user-select-none">
             <div class="col-2 bg-secondary d-flex align-items-center">
                 <p class="fs-4 fw-bold my-auto"><?= $post["user"]["username"] ?></p>
             </div>
@@ -38,7 +32,7 @@
     <?php endforeach; ?>
 </div>
 
-<script src="<?= JS_URL . "post-list.js" ?>"></script>
+<script src="<?= JS_URL . "clickable-div.js" ?>"></script>
 
 </body>
 
