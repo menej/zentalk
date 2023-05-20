@@ -18,6 +18,11 @@
                 </li>
                 <li class="nav-item">
                     <?php if (isset($_SESSION["user"])): ?>
+                        <a href="<?= BASE_URL . "post/add" ?>" class="nav-link text-white">Publish</a>
+                    <?php endif; ?>
+                </li>
+                <li class="nav-item">
+                    <?php if (isset($_SESSION["user"])): ?>
                         <a href="<?= BASE_URL . "user/profile" ?>" class="nav-link text-white">Profile</a>
                     <?php else : ?>
                         <a href="<?= BASE_URL . "user/login" ?>" class="nav-link text-white">Login</a>
