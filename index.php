@@ -68,7 +68,11 @@ $urls = [
         }
     },
     "post/delete" => function () {
-        PostController::delete();
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            PostController::delete();
+        } else {
+            PostController::showDeleteForm();
+        }
     },
     "" => function () {
         ViewHelper::redirect(BASE_URL . "home");
