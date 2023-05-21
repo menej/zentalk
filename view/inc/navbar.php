@@ -6,19 +6,19 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="nav">
-            <div class="input-group custom-width mt-3 mt-lg-0">
-                <input type="text" class="form-control" placeholder="Search" aria-label="Search"
-                       aria-describedby="basic-addon1">
-            </div>
+            <form action="" method="GET" role="search" class="input-group custom-width mt-3 mt-lg-0">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+            </form>
+
             <ul class="navbar-nav">
                 <li class="nav-item">
                     <a href="<?= BASE_URL . "post" ?>" class="nav-link text-white">Posts</a>
                 </li>
-                <li class="nav-item">
-                    <?php if (isset($_SESSION["user"])): ?>
+                <?php if (isset($_SESSION["user"])): ?>
+                    <li class="nav-item">
                         <a href="<?= BASE_URL . "post/add" ?>" class="nav-link text-white">Publish</a>
-                    <?php endif; ?>
-                </li>
+                    </li>
+                <?php endif; ?>
             </ul>
 
             <ul class="navbar-nav align-content-end ms-auto">
@@ -33,17 +33,15 @@
                             Profile
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">My profile</a></li>
+                            <li><a class="dropdown-item" href="<?= BASE_URL . "home" ?>">My profile</a></li>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
                             <li><a class="dropdown-item" href="<?= BASE_URL . "user/profile" ?>">Logout</a></li>
                         </ul>
                     </li>
-
                 <?php endif; ?>
             </ul>
         </div>
     </div>
-
 </nav>
