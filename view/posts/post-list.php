@@ -12,7 +12,6 @@
 
 <?php include(INC_URL . "navbar.php"); ?>
 
-
 <div class="container-lg my-5">
     <div class="row mb-4">
         <div class="col-12 text-center">
@@ -34,6 +33,6 @@
 
 <script src="<?= JS_URL . "clickable-div.js" ?>"></script>
 
-</body>
+<?php include(INC_URL . "footer.php") ?>
 
 

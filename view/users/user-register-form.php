@@ -49,5 +49,4 @@
     </form>
 </div>
 
-
-</body>
+<?php include(INC_URL . "footer.php") ?>
