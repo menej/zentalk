@@ -41,8 +41,24 @@ $urls = [
             UserController::showRegisterForm();
         }
     },
-    "user/favorites" => function () {
-
+    "user/favourites" => function () {
+        FavouriteController::favourites();
+    },
+    "user/favourites/add" => function() {
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            FavouriteController::addFavourite();
+        }
+        else {
+            ViewHelper::redirect(BASE_URL . "home");
+        }
+    },
+    "user/favourites/remove" => function() {
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            FavouriteController::removeFavourite();
+        }
+    },
+    "user/logout" => function() {
+        UserController::logout();
     },
     "user/profile" => function () {
         UserController::profile();

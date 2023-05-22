@@ -1,12 +1,17 @@
 <?php
 /**
  * @var array $posts
+ * @var string $query
  */
 ?>
 
 <?php include(INC_URL . "header.php") ?>
 
-<title>All posts</title>
+<?php if(!empty($query)): ?>
+    <title>Search for <?= $query ?></title>
+<?php else : ?>
+    <title>All posts</title>
+<?php endif; ?>
 
 <body id="bootstrap-overrides">
 
@@ -15,7 +20,12 @@
 <div class="container-lg my-5">
     <div class="row mb-4">
         <div class="col-12 text-center">
-            <h1 class="display-3 border-bottom">Check out all of the posts</h1>
+            <?php if(!empty($query)): ?>
+                <h1 class="display-3 border-bottom"><?= $query ?></h1>
+            <?php else : ?>
+                <h1 class="display-3 border-bottom">Check out all of the posts</h1>
+            <?php endif; ?>
+
         </div>
     </div>
 

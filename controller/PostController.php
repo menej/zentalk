@@ -2,6 +2,7 @@
 
 require_once("model/PostDB.php");
 require_once("model/UserDB.php");
+require_once("model/FavouriteDB.php");
 
 require_once("ViewHelper.php");
 
@@ -12,15 +13,28 @@ class PostController
     {
         // Get details of a specific post
         if (isset($_GET["pid"])) {
-            $post = PostDB::get($_GET["pid"]);
+            // Check if the post exists
+            try {
+                $post = PostDB::get($_GET["pid"]);
+            } catch (Exception $ex) {
+                ViewHelper::error404();
+                exit;
+            }
 
-            $user = UserDB::getUser($post["uid"]);
-            $post["user"] = $user;
+            $op = UserDB::getUser($post["uid"]);
+            $post["op"] = $op;
 
-            ViewHelper::render("view/posts/post-detail.php", ["post" => $post]);
+            $isFavourite = false;
+            if (isset($_SESSION["user"])) {
+
+                $isFavourite = FavouriteDB::favouriteExists($post["pid"], $_SESSION["user"]["uid"]);
+            }
+
+            ViewHelper::render("view/posts/post-detail.php", ["post" => $post, "isFavourite" => $isFavourite]);
+
         } // Get list of all posts
         else {
-            ViewHelper::redirect(BASE_URL . "post");
+            ViewHelper::redirect(BASE_URL . "post?" . "q=");
         }
     }
 
@@ -122,7 +136,7 @@ class PostController
 
         // Fill errors
         if (empty($errors)) {
-            foreach($data as $key => $value) {
+            foreach ($data as $key => $value) {
                 $errors[$key] = "";
             }
         }
@@ -242,7 +256,8 @@ class PostController
     }
 
     // POST: post/delete
-    public static function delete() {
+    public static function delete()
+    {
 
         // Check if the user is logged in
         if (empty($_SESSION["user"])) {
@@ -304,14 +319,18 @@ class PostController
                 $post["user"] = $user;
             }
 
-            ViewHelper::render("view/posts/post-list.php", ["posts" => $posts]);
-        } else {
+            $query = $_GET["q"];
+            ViewHelper::render("view/posts/post-list.php", ["posts" => $posts, "query" => $query]);
+        } // TODO: does this below even occur?
+        else {
+            self::index();
             $posts = PostDB::getAll();
 
             foreach ($posts as &$post) {
                 $user = UserDB::getUser($post["uid"]);
                 $post["user"] = $user;
             }
+
             ViewHelper::render("view/posts/post-list.php", ["posts" => $posts]);
         }
     }

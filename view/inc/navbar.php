@@ -6,7 +6,8 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="nav">
-            <form action="<?= BASE_URL . "post" ?>" method="GET" role="search" class="input-group custom-width mt-3 mt-lg-0">
+            <form action="<?= BASE_URL . "post" ?>" method="GET" role="search"
+                  class="input-group custom-width mt-3 mt-lg-0">
                 <input class="form-control me-2" name="q" type="search" placeholder="Search" aria-label="Search">
             </form>
 
@@ -33,11 +34,18 @@
                             Profile
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="<?= BASE_URL . "home" ?>">My profile</a></li>
+                            <li>
+                                <a class="dropdown-item" href="<?= BASE_URL . "home" ?>">My profile</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="<?= BASE_URL . "user/favourites" ?>">Favourites</a>
+                            </li>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
-                            <li><a class="dropdown-item" href="<?= BASE_URL . "user/profile" ?>">Logout</a></li>
+                            <li>
+                                <a class="dropdown-item" href="<?= BASE_URL . "user/logout" ?>">Logout</a>
+                            </li>
                         </ul>
                     </li>
                 <?php endif; ?>

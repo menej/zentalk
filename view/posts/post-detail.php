@@ -1,6 +1,7 @@
 <?php
 /**
  * @var array $post
+ * @var bool $isFavourite
  */
 ?>
 
@@ -34,10 +35,20 @@
                     </li>
                 <?php endif; ?>
                 <?php if (!empty($_SESSION["user"])): ?>
-                    <form action="<?= BASE_URL . "favourite/add" ?>" class="list-group-item" method="POST">
-                        <input type="hidden" name="pid" value="<?= $post["pid"] ?>">
-                        <button class="btn text-primary">Favourite</button>
-                    </form>
+                    <?php if ($isFavourite): ?>
+                        <form action="<?= BASE_URL . "user/favourites/remove" ?>" class="list-group-item"
+                              method="POST">
+                            <input type="hidden" name="pid" value="<?= $post["pid"] ?>">
+                            <button class="btn text-primary">Remove favourite</button>
+                        </form>
+                    <?php else : ?>
+                        <form action="<?= BASE_URL . "user/favourites/add" ?>" class="list-group-item"
+                              method="POST">
+                            <input type="hidden" name="pid" value="<?= $post["pid"] ?>">
+                            <button class="btn text-primary">Favourite</button>
+                        </form>
+                    <?php endif; ?>
+
                     <li class="list-group-item ms-auto border-start d-flex align-items-center">
                         <p class="mb-0">▼</p>
                     </li>
@@ -54,10 +65,11 @@
 
     <div class="row border-bottom">
         <div class="col-lg-8 col-12">
-            <p class="lead fw-bold fs-4">By: <?= $post["user"]["username"] ?></p>
+            <p class="lead fw-bold fs-4">By: <?= $post["op"]["username"] ?></p>
         </div>
         <div class="col-lg-4 col-12">
-            <p class="lead fw-bold fs-4 text-lg-end"><span class="d-lg-none">Published: </span><?= $post["post_date"] ?>
+            <p class="lead fw-bold fs-4 text-lg-end"><span
+                        class="d-lg-none">Published: </span><?= $post["post_date"] ?>
             </p>
         </div>
     </div>
