@@ -37,7 +37,7 @@
     </div>
 
     <?php foreach ($posts as $post): ?>
-        <div id="two" data-url="post?pid=<?= $post["pid"] ?>" class="row mb-4 clickable-div user-select-none">
+        <div id="two" data-url="post/detail?pid=<?= $post["pid"] ?>" class="row mb-4 clickable-div user-select-none">
             <div class="col-2 bg-secondary d-flex align-items-center">
                 <p class="fs-4 fw-bold my-auto"><?= $post["user"]["username"] ?></p>
             </div>

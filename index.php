@@ -44,14 +44,22 @@ $urls = [
     "user/favorites" => function () {
 
     },
-    "user/profile" => function() {
+    "user/profile" => function () {
         UserController::profile();
     },
     "post" => function () {
-        PostController::index();
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            ViewHelper::redirect(BASE_URL . "home");
+        } else {
+            PostController::search();
+        }
     },
-    "post/search" => function () {
-        PostController::search();
+    "post/detail" => function () {
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            ViewHelper::redirect(BASE_URL . "home");
+        } else {
+            PostController::index();
+        }
     },
     "post/add" => function () {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {

@@ -6,8 +6,8 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="nav">
-            <form action="" method="GET" role="search" class="input-group custom-width mt-3 mt-lg-0">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+            <form action="<?= BASE_URL . "post" ?>" method="GET" role="search" class="input-group custom-width mt-3 mt-lg-0">
+                <input class="form-control me-2" name="q" type="search" placeholder="Search" aria-label="Search">
             </form>
 
             <ul class="navbar-nav">

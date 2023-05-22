@@ -7,9 +7,8 @@ require_once("ViewHelper.php");
 
 class PostController
 {
-
+    // GET: post/detail
     public static function index()
-
     {
         // Get details of a specific post
         if (isset($_GET["pid"])) {
@@ -21,14 +20,7 @@ class PostController
             ViewHelper::render("view/posts/post-detail.php", ["post" => $post]);
         } // Get list of all posts
         else {
-            $posts = PostDB::getAll();
-
-            foreach ($posts as &$post) {
-                $user = UserDB::getUser($post["uid"]);
-                $post["user"] = $user;
-            }
-
-            ViewHelper::render("view/posts/post-list.php", ["posts" => $posts]);
+            ViewHelper::redirect(BASE_URL . "post");
         }
     }
 
@@ -299,5 +291,28 @@ class PostController
         }
 
         ViewHelper::redirect($url);
+    }
+
+    // GET: post
+    public static function search()
+    {
+        if (isset($_GET["q"])) {
+            $posts = PostDB::getAllByTitle($_GET["q"]);
+
+            foreach ($posts as &$post) {
+                $user = UserDB::getUser($post["uid"]);
+                $post["user"] = $user;
+            }
+
+            ViewHelper::render("view/posts/post-list.php", ["posts" => $posts]);
+        } else {
+            $posts = PostDB::getAll();
+
+            foreach ($posts as &$post) {
+                $user = UserDB::getUser($post["uid"]);
+                $post["user"] = $user;
+            }
+            ViewHelper::render("view/posts/post-list.php", ["posts" => $posts]);
+        }
     }
 }
