@@ -6,7 +6,7 @@
 
 <?php include("view/inc/" . "header.php"); ?>
 
-<title>Main menu</title>
+<title><?= $post["title"] ?></title>
 
 <body id="bootstrap-overrides">
 

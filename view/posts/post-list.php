@@ -6,7 +6,7 @@
 
 <?php include(INC_URL . "header.php") ?>
 
-<title>All Posts</title>
+<title>All posts</title>
 
 <body id="bootstrap-overrides">
 
