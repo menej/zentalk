@@ -36,7 +36,7 @@
                       required readonly><?= $post["content"] ?></textarea>
         </div>
         <div class="d-grid gap-2 d-md-block">
-            <a class="btn btn-primary btn-lg btn-outline-light" href="<?= BASE_URL . "post?pid=" . $post["pid"] ?>" >Cancel</a>
+            <a class="btn btn-primary btn-lg btn-outline-light" href="<?= BASE_URL . "post/detail?pid=" . $post["pid"] ?>" >Cancel</a>
             <button class="btn btn-danger btn-lg btn-outline-light">Delete</button>
         </div>
 
