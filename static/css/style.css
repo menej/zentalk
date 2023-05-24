@@ -6,6 +6,12 @@
   cursor: pointer;
 }
 
+.custom-width {
+  width: 100%;
+}
+
+
+
 #bootstrap-overrides .bg-primary {
   background-color: #5E8116 !important;
 }
@@ -16,4 +22,10 @@
 
 #bootstrap-overrides .btn-primary {
   background-color: #5E8116 !important;
+}
+
+@media (min-width: 992px) {
+  .custom-width {
+    width: 40%;
+  }
 }

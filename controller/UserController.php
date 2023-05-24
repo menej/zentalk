@@ -1,5 +1,7 @@
 <?php
 
+require_once("model/FavouriteDB.php");
+require_once("model/PostDB.php");
 require_once("model/UserDB.php");
 require_once("ViewHelper.php");
 
@@ -42,7 +44,7 @@ class UserController
         }
     }
 
-    public static function profile()
+    public static function logout()
     {
         unset($_SESSION["user"]);
         ViewHelper::redirect(BASE_URL . "home");
@@ -131,5 +133,9 @@ class UserController
 
         // login the user into the session
         self::login();
+    }
+
+    public static function profile()
+    {
     }
 }

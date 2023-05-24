@@ -41,17 +41,41 @@ $urls = [
             UserController::showRegisterForm();
         }
     },
-    "user/favorites" => function () {
-
+    "user/favourites" => function () {
+        FavouriteController::favourites();
     },
-    "user/profile" => function() {
+    "user/favourites/add" => function() {
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            FavouriteController::addFavourite();
+        }
+        else {
+            ViewHelper::redirect(BASE_URL . "home");
+        }
+    },
+    "user/favourites/remove" => function() {
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            FavouriteController::removeFavourite();
+        }
+    },
+    "user/logout" => function() {
+        UserController::logout();
+    },
+    "user/profile" => function () {
         UserController::profile();
     },
     "post" => function () {
-        PostController::index();
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            ViewHelper::redirect(BASE_URL . "home");
+        } else {
+            PostController::search();
+        }
     },
-    "post/search" => function () {
-        PostController::search();
+    "post/detail" => function () {
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            ViewHelper::redirect(BASE_URL . "home");
+        } else {
+            PostController::index();
+        }
     },
     "post/add" => function () {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {

@@ -1,12 +1,13 @@
 <?php
 /**
  * @var array $post
+ * @var bool $isFavourite
  */
 ?>
 
 <?php include("view/inc/" . "header.php"); ?>
 
-<title>Main menu</title>
+<title><?= $post["title"] ?></title>
 
 <body id="bootstrap-overrides">
 
@@ -34,10 +35,20 @@
                     </li>
                 <?php endif; ?>
                 <?php if (!empty($_SESSION["user"])): ?>
-                    <form action="<?= BASE_URL . "favourite/add" ?>" class="list-group-item" method="POST">
-                        <input type="hidden" name="pid" value="<?= $post["pid"] ?>">
-                        <button class="btn text-primary">Favourite</button>
-                    </form>
+                    <?php if ($isFavourite): ?>
+                        <form action="<?= BASE_URL . "user/favourites/remove" ?>" class="list-group-item"
+                              method="POST">
+                            <input type="hidden" name="pid" value="<?= $post["pid"] ?>">
+                            <button class="btn text-primary">Remove favourite</button>
+                        </form>
+                    <?php else : ?>
+                        <form action="<?= BASE_URL . "user/favourites/add" ?>" class="list-group-item"
+                              method="POST">
+                            <input type="hidden" name="pid" value="<?= $post["pid"] ?>">
+                            <button class="btn text-primary">Favourite</button>
+                        </form>
+                    <?php endif; ?>
+
                     <li class="list-group-item ms-auto border-start d-flex align-items-center">
                         <p class="mb-0">▼</p>
                     </li>
@@ -54,10 +65,11 @@
 
     <div class="row border-bottom">
         <div class="col-lg-8 col-12">
-            <p class="lead fw-bold fs-4">By: <?= $post["user"]["username"] ?></p>
+            <p class="lead fw-bold fs-4">By: <?= $post["op"]["username"] ?></p>
         </div>
         <div class="col-lg-4 col-12">
-            <p class="lead fw-bold fs-4 text-lg-end"><span class="d-lg-none">Published: </span><?= $post["post_date"] ?>
+            <p class="lead fw-bold fs-4 text-lg-end"><span
+                        class="d-lg-none">Published: </span><?= $post["post_date"] ?>
             </p>
         </div>
     </div>
@@ -70,7 +82,4 @@
 </div>
 
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
-        crossorigin="anonymous"></script>
-</body>
+<?php include(INC_URL . "footer.php") ?>

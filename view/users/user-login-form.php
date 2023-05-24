@@ -6,7 +6,7 @@
 
 <?php include(INC_URL . "header.php") ?>
 
-<title>Document</title>
+<title>Login</title>
 
 <body id="bootstrap-overrides">
 
@@ -15,7 +15,6 @@
 
 <?php if ($errors["incorrect"]): ?>
     <p class="text-danger"><?= $errors["incorrect"] ?></p>
-
 <?php endif; ?>
 
 
@@ -54,11 +53,7 @@
         <div class="col-sm-6 col-12 text-sm-start">
             <a href="<?= BASE_URL . "user/register" ?>" class="fs-5 link-success">New user</a>
         </div>
-
-
     </div>
-
 </div>
 
-
-</body>
+<?php include(INC_URL . "footer.php") ?>

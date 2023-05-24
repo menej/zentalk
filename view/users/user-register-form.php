@@ -6,7 +6,7 @@
 
 <?php include(INC_URL . "header.php") ?>
 
-<title>Document</title>
+<title>Register</title>
 
 <body id="bootstrap-overrides">
 
@@ -49,5 +49,4 @@
     </form>
 </div>
 
-
-</body>
+<?php include(INC_URL . "footer.php") ?>

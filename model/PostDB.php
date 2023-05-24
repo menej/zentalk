@@ -90,4 +90,20 @@ class PostDB
 
         return $statement->fetchAll();
     }
+
+    public static function getAllByTitle($query)
+    {
+        $db = DBInit::getInstance();
+
+        $statement = $db->prepare("
+            SELECT pid, uid, title, content, rating
+            FROM post
+            WHERE title LIKE :title
+        ");
+        $str = '%' . $query . '%';
+        $statement->bindParam(":title", $str);
+        $statement->execute();
+
+        return $statement->fetchAll();
+    }
 }

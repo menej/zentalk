@@ -7,7 +7,7 @@
 
 <?php include("view/inc/" . "header.php"); ?>
 
-<title>Main menu</title>
+<title>Edit <?= $post["title"] ?></title>
 
 <body id="bootstrap-overrides">
 
@@ -36,15 +36,11 @@
                       required><?= $post["content"] ?></textarea>
         </div>
         <div class="d-grid gap-2 d-md-block">
-            <button class="btn btn-primary btn-lg btn-outline-light">Edit</button>
-            <a class="btn btn-danger btn-lg btn-outline-light" href="<?= BASE_URL . "post?pid=" . $post["pid"] ?>">Cancel</a>
+            <a class="btn btn-primary btn-lg btn-outline-light" href="<?= BASE_URL . "post/detail?pid=" . $post["pid"] ?>">Cancel</a>
+            <button class="btn btn-danger btn-lg btn-outline-light btn-block">Edit</button>
         </div>
 
     </form>
 </div>
 
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
-        crossorigin="anonymous"></script>
-</body>
+<?php include(INC_URL . "footer.php") ?>
