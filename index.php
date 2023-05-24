@@ -10,27 +10,33 @@ require_once "ViewHelper.php";
 session_start();
 
 define("BASE_URL", $_SERVER["SCRIPT_NAME"] . "/");
-define("IMAGES_URL", rtrim($_SERVER["SCRIPT_NAME"], "index.php") . "static/images/");  //noispection Duplicate character
+define("IMAGES_URL", rtrim($_SERVER["SCRIPT_NAME"], "index.php") . "static/images/");
 define("CSS_URL", rtrim($_SERVER["SCRIPT_NAME"], "index.php") . "static/css/");
 define("JS_URL", rtrim($_SERVER["SCRIPT_NAME"], "index.php") . "static/js/");
 
+// TODO: find out why the commented out method for this does not work
 // define("INC_URL", rtrim($_SERVER["SCRIPT_NAME"], "index.php") . "view/inc/");
-const INC_URL = "view/inc/";  // TODO: find out why above method for this does not work
+const INC_URL = "view/inc/";
 
+// Check if URL contains path
 $path = isset($_SERVER["PATH_INFO"]) ? trim($_SERVER["PATH_INFO"], "/") : "";
 
 
 $urls = [
     "home" => function () {
+        // [GET, POST]: home
         HomeController::index();
     },
     "user" => function () {
-        UserController::login();
+        // [GET, POST]: user
+        ViewHelper::redirect(BASE_URL . "user/profile");
     },
     "user/login" => function () {
+        // POST: user/login
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             UserController::login();
-        } else {
+        } // GET: user/login
+        else {
             UserController::showLoginForm();
         }
     },
@@ -44,20 +50,19 @@ $urls = [
     "user/favourites" => function () {
         FavouriteController::favourites();
     },
-    "user/favourites/add" => function() {
+    "user/favourites/add" => function () {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             FavouriteController::addFavourite();
-        }
-        else {
+        } else {
             ViewHelper::redirect(BASE_URL . "home");
         }
     },
-    "user/favourites/remove" => function() {
+    "user/favourites/remove" => function () {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             FavouriteController::removeFavourite();
         }
     },
-    "user/logout" => function() {
+    "user/logout" => function () {
         UserController::logout();
     },
     "user/profile" => function () {

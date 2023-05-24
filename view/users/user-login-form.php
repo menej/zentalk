@@ -1,5 +1,6 @@
 <?php
 /**
+ * @var array $data
  * @var array $errors
  */
 ?>
@@ -13,37 +14,26 @@
 <?php include(INC_URL . "navbar.php"); ?>
 
 
-<?php if ($errors["incorrect"]): ?>
-    <p class="text-danger"><?= $errors["incorrect"] ?></p>
-<?php endif; ?>
-
-
 <div class="container-lg my-5">
     <form action="<?= BASE_URL . "user/login" ?>" method="POST">
         <div class="form-floating mb-5">
-            <input type="text" id="username" name="username" class="form-control" placeholder="Place username here" required autofocus>
+            <input type="text" id="username" name="username" class="form-control" placeholder="Place username here"
+                   autofocus>
             <label for="username" class="form-label">Username</label>
+            <span class="text-danger"><?= $errors["username"] ?></span>
         </div>
-
-        <div class="form-floating mb-5">
-            <input type="password" id="password" name="password" class="form-control" placeholder="Place password here" required>
+        <div class="form-floating mb-4">
+            <input type="password" id="password" name="password" class="form-control"
+                   placeholder="Place password here">
             <label for="password" class="form-label">Password</label>
+            <span class="text-danger"><?= $errors["password"] ?></span>
         </div>
-
+        <?php if (isset($errors["errorMessage"])): ?>
+            <p class="text-danger fs-5 mb-4"><?= $errors["errorMessage"] ?></p>
+        <?php endif; ?>
         <div class="d-grid gap-2">
             <button class="btn btn-primary btn-outline-light fs-5">Login</button>
         </div>
-        <!--
-    <label for="username">Username:
-        <input id="username" type="text" name="username" autocomplete="off" required autofocus>
-        <span class="text-danger"><?= $errors["username"] ?></span>
-    </label><br>
-    <label for="password">Password:
-        <input id="password" type="password" name="password" required>
-        <span class="text-danger"><?= $errors["password"] ?></span>
-    </label><br>
-    <button>Login in</button>
-     -->
     </form>
 
     <div class="row mt-4">

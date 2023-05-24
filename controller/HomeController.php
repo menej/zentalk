@@ -5,10 +5,11 @@ require_once("model/UserDB.php");
 
 class HomeController
 {
-    // Show home page (GET: index)
+    // [GET, POST]: home
     public static function index()
     {
-        // Get 5 latest posts
+        // Fill the home page with five latest posts
+        // TODO: implement this using Ajax
         $data = PostDB::getFiveLatest();
 
         foreach ($data as &$post) {

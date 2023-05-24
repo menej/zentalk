@@ -3,44 +3,72 @@
 require_once("model/FavouriteDB.php");
 require_once("model/PostDB.php");
 require_once("model/UserDB.php");
+require_once("model/User.php");
 require_once("ViewHelper.php");
 
 class UserController
 {
-
+    // GET: user/login
     public static function showLoginForm($data = [], $errors = []): void
     {
         // Check if user is logged in
-        if (!empty($_SESSION["user"])) {
+        if (User::isLoggedIn()) {
             ViewHelper::redirect(BASE_URL . "home");
             return;
         }
 
-        if (empty($errors)) {
-            $errors = [
+        // If $data is an empty array, let's set some default values
+        if (empty($data)) {
+            $data = [
                 "username" => "",
-                "password" => "",
-                "incorrect" => ""
+                "password" => ""
             ];
         }
 
-        $vars = ["errors" => $errors];
+        if (empty($errors)) {
+            foreach ($data as $key => $value) {
+                $errors[$key] = "";
+            }
+        }
+
+        $vars = ["data" => $data, "errors" => $errors];
 
         ViewHelper::render("view/users/user-login-form.php", $vars);
     }
 
-    // POST request
+    // POST: user/login
     public static function login()
     {
-        if (UserDB::validLoginAttempt($_POST["username"], $_POST["password"])) {
-            $_SESSION["user"] = UserDB::getUserByUsername($_POST["username"]);
+        $rules = [
+            "username" => FILTER_SANITIZE_SPECIAL_CHARS,
+            "password" => FILTER_SANITIZE_SPECIAL_CHARS
+        ];
 
-            ViewHelper::redirect(BASE_URL . "home");
+        $data = filter_input_array(INPUT_POST, $rules);
+
+        $errors["username"] = empty($data["username"]) ? "Provide the username." : "";
+        $errors["password"] = empty($data["password"]) ? "Provide the password." : "";
+
+        // Is there an error?
+        $isDataValid = true;
+        foreach ($errors as $error) {
+            $isDataValid = $isDataValid && empty($error);
+        }
+
+        if ($isDataValid) {
+            if (UserDB::validLoginAttempt($data["username"], $_POST["password"])) {
+                $_SESSION["user"] = UserDB::getUserByUsername($_POST["username"]);
+                ViewHelper::redirect(BASE_URL . "home");
+            } else {
+                self::showLoginForm($data, [
+                    "errorMessage" => "Invalid username or password.",
+                    "username" => "",
+                    "password" => ""
+                ]);
+
+            }
         } else {
-            //ViewHelper::render("view/user-login-form.php", [
-            //   "errorMessage" => "Invalid username or password."
-            //]);
-            echo "hacker?<br>";
+            self::showLoginForm($data, $errors);
         }
     }
 
