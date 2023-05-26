@@ -31,6 +31,7 @@ class UserController
             }
         }
 
+        // Note: at this point $data is not used
         $vars = ["data" => $data, "errors" => $errors];
 
         ViewHelper::render("view/users/user-login-form.php", $vars);
@@ -56,8 +57,8 @@ class UserController
         }
 
         if ($isDataValid) {
-            if (UserDB::validLoginAttempt($data["username"], $_POST["password"])) {
-                $_SESSION["user"] = UserDB::getUserByUsername($_POST["username"]);
+            if (UserDB::validLoginAttempt($data["username"], $data["password"])) {
+                User::loginUser($data["username"]);
                 ViewHelper::redirect(BASE_URL . "home");
             } else {
                 self::showLoginForm($data, [
@@ -65,7 +66,6 @@ class UserController
                     "username" => "",
                     "password" => ""
                 ]);
-
             }
         } else {
             self::showLoginForm($data, $errors);

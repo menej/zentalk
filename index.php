@@ -41,9 +41,11 @@ $urls = [
         }
     },
     "user/register" => function () {
+        // POST: user/register
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             UserController::register();
-        } else {
+        }  // GET: user/register
+        else {
             UserController::showRegisterForm();
         }
     },
