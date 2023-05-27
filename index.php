@@ -119,6 +119,6 @@ try {
         ViewHelper::error404();
     }
 } catch (Exception $e) {
-    echo "An error occurred: <pre>$e</pre>";
+    echo "An error occurred: <pre>$e</pre>. Please contanct the site administrator.";
     // ViewHelper::error404();
 }
