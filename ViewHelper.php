@@ -21,12 +21,15 @@ class ViewHelper {
     // Displays a simple 404 message
     public static function error404() {
         header('This is not the page you are looking for', true, 404);
-        $html404 = sprintf("<!doctype html>\n" .
+        /*$html404 = sprintf("<!doctype html>\n" .
             "<title>Error 404: Page does not exist</title>\n" .
             "<h1>Error 404: Page does not exist</h1>\n".
             "<p>The page <i>%s</i> does not exist.</p>", $_SERVER["REQUEST_URI"]);
 
         echo $html404;
+        */
+
+        self::render("view/errors/error404.php", ["REQUEST_URI" => htmlspecialchars($_SERVER["REQUEST_URI"])]);
     }
 
     // Returns true if the request is AJAX

@@ -115,8 +115,8 @@ try {
     if (isset($urls[$path])) {
         $urls[$path]();
     } else {
-        echo "No controller for '$path'";
-        // ViewHelper::error404();
+        // echo "No controller for '$path'";
+        ViewHelper::error404();
     }
 } catch (Exception $e) {
     echo "An error occurred: <pre>$e</pre>";

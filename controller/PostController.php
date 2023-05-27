@@ -321,17 +321,9 @@ class PostController
 
             $query = $_GET["q"];
             ViewHelper::render("view/posts/post-list.php", ["posts" => $posts, "query" => $query]);
-        } // TODO: does this below even occur?
+        }
         else {
             self::index();
-            $posts = PostDB::getAll();
-
-            foreach ($posts as &$post) {
-                $user = UserDB::getUser($post["uid"]);
-                $post["user"] = $user;
-            }
-
-            ViewHelper::render("view/posts/post-list.php", ["posts" => $posts]);
         }
     }
 }
