@@ -32,7 +32,8 @@
             <label for="content" class="form-label fs-5">Content</label>
             <textarea class="form-control" name="content" id="content" rows="10" required></textarea>
         </div>
-        <button class="btn-primary btn-lg btn-outline-light">Publish</button>
+        <button class="btn btn-primary btn-lg btn-outline-light">Publish</button>
+
     </form>
 </div>
 
