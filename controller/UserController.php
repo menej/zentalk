@@ -40,6 +40,7 @@ class UserController
     // POST: user/login
     public static function login()
     {
+        // TODO: password checking might not be the best (what did I mean by that?)
         $rules = [
             "username" => FILTER_SANITIZE_SPECIAL_CHARS,
             "password" => FILTER_SANITIZE_SPECIAL_CHARS
@@ -81,23 +82,29 @@ class UserController
     public static function showRegisterForm($data = [], $errors = [])
     {
         // Check if user is logged in
-        if (!empty($_SESSION["user"])) {
+        if (User::isLoggedIn()) {
             ViewHelper::redirect(BASE_URL . "home");
             return;
         }
 
-        // Show register form
-        if (empty($errors)) {
-            $errors = [
+        // If $data is an empty array, let's set some default values
+        if (empty($data)) {
+            $data = [
+                "email" => "",
                 "username" => "",
                 "password" => "",
-                "email" => "",
                 "first_name" => "",
                 "last_name" => ""
             ];
         }
 
-        $vars = ["errors" => $errors];
+        if (empty($errors)) {
+            foreach ($data as $key => $value) {
+                $errors[$key] = "";
+            }
+        }
+
+        $vars = ["data" => $data, "errors" => $errors];
 
         ViewHelper::render("view/users/user-register-form.php", $vars);
     }
@@ -105,23 +112,56 @@ class UserController
     // POST: user/register
     public static function register()
     {
+        // TODO: implement validation on frontend (JS - red borders, regex for password) and HTML pattern regex
         // check for validity
-        $rules = [
-            "email" => FILTER_SANITIZE_SPECIAL_CHARS,  // cannot be longer than...
-            "username" => FILTER_SANITIZE_SPECIAL_CHARS,  // cannot be longer than...
+        /*$rules = [
+            "email" => FILTER_SANITIZE_SPECIAL_CHARS,  // cannot be longer than... (256 chars)
+            "username" => FILTER_SANITIZE_SPECIAL_CHARS,  // cannot be longer than... (25 chars)
             "password" => FILTER_SANITIZE_SPECIAL_CHARS,  // cannot be longer than... (72 chars)
-            "first_name" => FILTER_SANITIZE_SPECIAL_CHARS, // cannot be longer than...
-            "last_name" => FILTER_SANITIZE_SPECIAL_CHARS  // cannot be longer than...
+            "first_name" => FILTER_SANITIZE_SPECIAL_CHARS, // cannot be longer than... (50 chars)
+            "last_name" => FILTER_SANITIZE_SPECIAL_CHARS  // cannot be longer than... (50 chars)
+        ];
+        */
+        $rules = [
+            "email" => [
+                "filter" => FILTER_VALIDATE_EMAIL & FILTER_VALIDATE_REGEXP,
+                "options" => ["regexp" => "/^.{1,256}$/"]
+            ],
+            "username" => [
+                "filter" => FILTER_VALIDATE_REGEXP,
+                "options" => ["regexp" => "/^[a-zA-Z0-9šđčćžŠĐČĆŽ]{1,25}$/"]
+            ],
+            "password" => [
+                "filter" => FILTER_CALLBACK,
+                "options" => function ($value) {
+                    $uppercase = preg_match('@[A-Z]@', $value);
+                    $lowercase = preg_match('@[a-z]@', $value);
+                    $number = preg_match('@[0-9]@', $value);
+                    $specialChars = preg_match('@[\W]@', $value);
+                    return (!$uppercase || !$lowercase || !$number || !$specialChars || strlen($value) <= 8 || strlen($value) >= 72) ? false : $value;
+                }
+            ],
+            "first_name" => [
+                // Only letters, dots, dashes
+                "filter" => FILTER_VALIDATE_REGEXP,
+                "options" => ["regexp" => '/^[a-zA-ZšđčćžŠĐČĆŽ\.\-]{1,50}$/']
+            ],
+            "last_name" => [
+                // Only letters, dots, dashes
+                "filter" => FILTER_VALIDATE_REGEXP,
+                "options" => ["regexp" => '/^[a-zA-ZšđčćžŠĐČĆŽ\.\-]{1,50}$/']
+            ]
         ];
 
         $data = filter_input_array(INPUT_POST, $rules);
 
-        $errors["email"] = empty($data["email"]) ? "Provide email" : "";
-        $errors["username"] = empty($data["username"]) ? "Provide username" : "";
-        $errors["password"] = empty($data["password"]) ? "Provide password" : "";
-        $errors["first_name"] = empty($data["first_name"]) ? "Provide first name" : "";
-        $errors["last_name"] = empty($data["last_name"]) ? "Provide last name" : "";
-        $errors["error_message"] = "";
+
+        //$errors["email"] = $data["email"] === false ? "Provide an valid email" : "";
+        $errors["email"] = $data["email"] === false ? "Provide an valid email" : "";
+        $errors["username"] = $data["username"] === false ? "Provide an valid username (username should contain no special characters, max. length of 25)" : "";
+        $errors["password"] = $data["password"] === false ? "Provide an valid password" : "";
+        $errors["first_name"] = $data["first_name"] === false ? "Provide an valid first name" : "";
+        $errors["last_name"] = $data["last_name"] === false ? "Provide an valid last name" : "";
 
         $isDataValid = true;
         foreach ($errors as $error) {
@@ -149,7 +189,6 @@ class UserController
         }
 
         // create user
-        $data["password"] = password_hash($data["password"], PASSWORD_DEFAULT);
         UserDB::insert(
             $data["email"],
             $data["username"],
@@ -158,12 +197,13 @@ class UserController
             $data["last_name"]
         );
 
-
         // login the user into the session
+        // this will work, since the variables $_POST["username"] and $_POST["password"] are set and correct
         self::login();
     }
 
     public static function profile()
     {
+        ViewHelper::redirect(BASE_URL . "home");
     }
 }

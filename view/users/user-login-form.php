@@ -18,13 +18,13 @@
     <form action="<?= BASE_URL . "user/login" ?>" method="POST">
         <div class="form-floating mb-5">
             <input type="text" id="username" name="username" class="form-control" placeholder="Place username here"
-                   autofocus>
+                   autofocus required>
             <label for="username" class="form-label">Username</label>
             <span class="text-danger"><?= $errors["username"] ?></span>
         </div>
         <div class="form-floating mb-4">
             <input type="password" id="password" name="password" class="form-control"
-                   placeholder="Place password here">
+                   placeholder="Place password here" required>
             <label for="password" class="form-label">Password</label>
             <span class="text-danger"><?= $errors["password"] ?></span>
         </div>

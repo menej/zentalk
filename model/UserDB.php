@@ -105,6 +105,9 @@ class UserDB
             INSERT INTO user (email, username, password, first_name, last_name) 
             VALUES (:email, :username, :password, :first_name, :last_name)
         ");
+
+        $password = password_hash($password, PASSWORD_DEFAULT);
+
         $statement->bindParam(":email", $email);
         $statement->bindParam(":username", $username);
         $statement->bindParam(":password", $password);
