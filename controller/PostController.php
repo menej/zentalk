@@ -13,9 +13,11 @@ class PostController
     {
         // Get details of a specific post
         if (isset($_GET["pid"])) {
+            $pid = filter_input(INPUT_GET, "pid", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
             // Check if the post exists
             try {
-                $post = PostDB::get($_GET["pid"]);
+                $post = PostDB::get($pid);
             } catch (Exception $ex) {
                 ViewHelper::error404();
                 exit;
@@ -25,8 +27,7 @@ class PostController
             $post["op"] = $op;
 
             $isFavourite = false;
-            if (isset($_SESSION["user"])) {
-
+            if (User::isLoggedIn()) {
                 $isFavourite = FavouriteDB::favouriteExists($post["pid"], $_SESSION["user"]["uid"]);
             }
 
@@ -41,7 +42,7 @@ class PostController
     public static function showAddForm($data = [], $errors = [])
     {
         // check if user is logged in, else redirect him to login
-        if (empty($_SESSION["user"])) {
+        if (!User::isLoggedIn()) {
             ViewHelper::redirect(BASE_URL . "user/login");
             exit();
         }
@@ -69,7 +70,7 @@ class PostController
 
     public static function add()
     {
-        if (empty($_SESSION["user"])) {
+        if (!User::isLoggedIn()) {
             ViewHelper::redirect(BASE_URL . "user/login");
             exit();
         }
@@ -108,17 +109,17 @@ class PostController
     public static function showEditForm($data = [], $errors = []): void
     {
         // Check if the user is logged in
-        if (empty($_SESSION["user"])) {
+        if (!User::isLoggedIn()) {
             ViewHelper::redirect(BASE_URL . "user/login");
             exit();
         }
 
-        $pid = $_GET["pid"] ?? null;
+        $pid = filter_input(INPUT_GET, "pid", FILTER_SANITIZE_NUMBER_INT);
 
         // Check if the GET request is valid
         if ($pid === null) {
             ViewHelper::error404();
-            exit();
+            return;
         }
 
         // Check if the post exists
@@ -142,15 +143,14 @@ class PostController
         }
 
         // Check if the current user is the creator of the
+        // TODO: implement this in the model
         if ($_SESSION["user"]["uid"] !== $data["uid"]) {
-            echo "here";
             ViewHelper::redirect(BASE_URL . "home");
-            exit();
+            return;
         }
 
         // User is the creator and everything else is valid
         ViewHelper::render("view/posts/post-edit.php", ["post" => $data, "errors" => $errors]);
-
     }
 
     // POST: post/edit
@@ -158,17 +158,16 @@ class PostController
     {
         // TODO: check if all these checking procedures make sense, and if so - make a function for checking these
         // Check if user is logged in
-        if (empty($_SESSION["user"])) {
+        if (!User::isLoggedIn()) {
             ViewHelper::redirect(BASE_URL . "user/login");
-            exit();
+            return;
         }
-
-        $pid = $_POST["pid"] ?? null;
+        $pid = filter_input(INPUT_POST, "pid", FILTER_SANITIZE_NUMBER_INT);
 
         // Check if the GET request is valid
         if ($pid === null) {
             ViewHelper::error404();
-            exit();
+            return;
         }
 
         // Check if the post exists
@@ -179,6 +178,7 @@ class PostController
             exit;
         }
 
+        // TODO: implement this in the model (same as showEditForm)
         // Check if the current user is the creator of the
         if ($_SESSION["user"]["uid"] !== $post["uid"]) {
             echo "here";
@@ -208,30 +208,29 @@ class PostController
                 $data["title"],
                 $data["content"]
             );
-            echo "here";
             ViewHelper::redirect(BASE_URL . "post?pid=" . $data["pid"]);
         } else {
-            // TODO: this is bad, everything gets checked twice
+            // TODO: this is bad, everything gets checked twice when we call showEditForm
+            // TODO: should we even check the data and errors in showEditForm?
             self::showEditForm($data, $errors);
         }
-
     }
 
     // GET: post/delete
     public static function showDeleteForm()
     {
         // Check if user is logged in
-        if (empty($_SESSION["user"])) {
+        if (!User::isLoggedIn()) {
             ViewHelper::redirect(BASE_URL . "user/login");
-            exit();
+            return;
         }
 
-        $pid = $_GET["pid"] ?? null;
+        $pid = filter_input(INPUT_GET, "pid", FILTER_SANITIZE_NUMBER_INT);
 
         // Check if the GET request is valid
         if ($pid === null) {
             ViewHelper::error404();
-            exit();
+            return;
         }
 
         // Check if the post exists
@@ -260,9 +259,9 @@ class PostController
     {
 
         // Check if the user is logged in
-        if (empty($_SESSION["user"])) {
+        if (!User::isLoggedIn()) {
             ViewHelper::redirect(BASE_URL . "user/login");
-            exit();
+            return;
         }
 
         $rules = [
@@ -290,7 +289,6 @@ class PostController
             ViewHelper::redirect(BASE_URL . "home");
             exit();
         }
-
 
         $isDataValid = true;
         if ($isDataValid) {

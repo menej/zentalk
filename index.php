@@ -70,6 +70,8 @@ $urls = [
     "user/profile" => function () {
         UserController::profile();
     },
+    // TODO: reimplement search and index methods in PostController on GET method to post
+    // TODO: so instead of calling search method, it calls index (consistency!)
     "post" => function () {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             ViewHelper::redirect(BASE_URL . "home");

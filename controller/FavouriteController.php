@@ -9,11 +9,12 @@ class FavouriteController
     public static function favourites()
     {
         // Check if user is logged in
-        if (empty($_SESSION["user"])) {
+        if (!User::isLoggedIn()) {
             ViewHelper::redirect(BASE_URL . "login");
             return;
         }
 
+        // TODO: reimplement this in User model
         $favourites = FavouriteDB::getFavourites($_SESSION["user"]["uid"]);
 
         $posts = [];
@@ -35,7 +36,7 @@ class FavouriteController
     public static function addFavourite()
     {
         // Check if user is logged in
-        if (empty($_SESSION["user"])) {
+        if (!User::isLoggedIn()) {
             ViewHelper::redirect(BASE_URL . "login");
             return;
         }
@@ -47,7 +48,7 @@ class FavouriteController
         }
 
         // Check if PID exists
-        $pid = $_POST["pid"];
+        $pid = filter_input(INPUT_POST, "pid", FILTER_SANITIZE_NUMBER_INT);
 
         // Check if post exists
         try {
@@ -72,7 +73,7 @@ class FavouriteController
     public static function removeFavourite()
     {
         // Check if user is logged in
-        if (empty($_SESSION["user"])) {
+        if (!User::isLoggedIn()) {
             ViewHelper::redirect(BASE_URL . "login");
             return;
         }
@@ -84,7 +85,7 @@ class FavouriteController
         }
 
         // Check if PID exists
-        $pid = $_POST["pid"];
+        $pid = filter_input(INPUT_POST, "pid", FILTER_SANITIZE_NUMBER_INT);
 
         // Check if post exists
         try {
