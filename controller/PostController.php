@@ -312,14 +312,14 @@ class PostController
     public static function search()
     {
         if (isset($_GET["q"])) {
-            $posts = PostDB::getAllByTitle($_GET["q"]);
+            $query = filter_input(INPUT_GET, "q", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            $posts = PostDB::getAllByTitle($query);
 
             foreach ($posts as &$post) {
                 $user = UserDB::getUser($post["uid"]);
                 $post["user"] = $user;
             }
 
-            $query = $_GET["q"];
             ViewHelper::render("view/posts/post-list.php", ["posts" => $posts, "query" => $query]);
         }
         else {
